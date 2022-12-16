@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// import FIltersArea from "./components/filters/FIltersArea";
+import TableArea from "./components/table/TableArea";
+import React from "react";
+import { connect } from "react-redux";
+import ModalAddItem from "./components/modals/ModalAddItem";
+import Loader from "./components/ui/Loader";
+import { GetLoading } from "./redux/selectors";
+import FixedButtons from "./components/ui/FixedButtons";
+import ButtonMenu from "./components/ui/ButtonMenu";
+import ModalViewItem from "./components/modals/ModalViewItem";
 
-function App() {
+const App = ({ loading }) => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading && <Loader />}
+      {/* <FixedButtons /> */}
+      <ModalAddItem />
+      <ModalViewItem />
+      {/* <FIltersArea /> */}
+      <TableArea />
+      <ButtonMenu />
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  loading: GetLoading(state),
+});
+
+export default connect(mapStateToProps)(App);
