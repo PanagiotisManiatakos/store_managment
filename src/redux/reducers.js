@@ -4,6 +4,13 @@ const items = (state = [], action) => {
       return action.value;
     case "items/ADD":
       return [action.value, ...state];
+    case "items/DELETE":
+      console.log(state);
+      const tempArray = new Array(...state);
+      console.log(tempArray);
+      tempArray.splice(action.index, 1);
+      console.log(tempArray);
+      return tempArray;
     default:
       return state;
   }

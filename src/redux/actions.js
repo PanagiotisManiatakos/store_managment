@@ -8,6 +8,11 @@ export const AddItem = (value) => ({
   value,
 });
 
+export const DeleteItem = (index) => ({
+  type: "items/DELETE",
+  index,
+});
+
 export const SetLoading = (value) => ({
   type: "ui/loader/SET",
   value,

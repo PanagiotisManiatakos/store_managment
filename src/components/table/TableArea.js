@@ -1,5 +1,4 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
 import ProductRow from "./ProductRow";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import db from "../../firebase.config";
@@ -9,7 +8,6 @@ import { GetItems } from "../../redux/selectors";
 
 const TableArea = ({ items, handleInitItems, handleLoading, handleSetOpenItemView }) => {
   const [selected, setSelected] = React.useState(undefined);
-  const [hasItems, setHasItems] = React.useState(false);
 
   React.useEffect(() => {
     const fetchItems = async () => {
@@ -17,7 +15,6 @@ const TableArea = ({ items, handleInitItems, handleLoading, handleSetOpenItemVie
       const itemsQ = query(collection(db, "items"), orderBy("code"));
       const itemsSnap = await getDocs(itemsQ);
       let tempItem = [];
-      setHasItems(!itemsSnap.empty);
       if (!itemsSnap.empty) {
         itemsSnap.forEach((doc) => {
           tempItem.push({ ...doc.data(), docID: doc.id });
@@ -36,12 +33,26 @@ const TableArea = ({ items, handleInitItems, handleLoading, handleSetOpenItemVie
   };
 
   return (
-    <div className="h-50 ">
-      {hasItems
-        ? items.map((x, index) => (
-            <ProductRow key={index} index={index} item={x} selected={selected} onClick={() => handleRowClick(index)} />
-          ))
-        : "No Data"}
+    <div>
+      {items?.length > 0 ? (
+        items.map((x, index) => (
+          <ProductRow key={index} index={index} item={x} selected={selected} onClick={() => handleRowClick(index)} />
+        ))
+      ) : (
+        <div
+          style={{
+            height: "100vh",
+            flexDirection: "column",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <h2>No Items yet</h2>
+          <h5 className="m-3">Dont worry. Just start by creating one</h5>
+        </div>
+      )}
     </div>
   );
 };

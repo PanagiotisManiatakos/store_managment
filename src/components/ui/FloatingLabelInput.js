@@ -3,25 +3,21 @@ import { FloatingLabel, Form, InputGroup } from "react-bootstrap";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const FloatingLabelInput = React.forwardRef((props, ref) => {
-  const [value, setValue] = React.useState("");
-
-  React.useEffect(() => setValue(ref?.current?.value), []);
-
   return (
     <InputGroup className="crm-floating-with-icon" props={props}>
       <FloatingLabel label={props.placeholder}>
         <Form.Control
           className="crm-input ps-1"
-          value={value}
+          value={props.value}
           ref={ref}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => props.setValue(e.target.value)}
           type={props.type}
           inputMode={props.inputMode}
           placeholder={props.placeholder}
         />
       </FloatingLabel>
-      {value !== "" && (
-        <div className="d-flex align-items-center justify-content-center" onClick={() => setValue("")}>
+      {props.value !== "" && (
+        <div className="d-flex align-items-center justify-content-center" onClick={() => props.setValue("")}>
           <TiDeleteOutline size="1.75rem" />
         </div>
       )}

@@ -8,21 +8,21 @@ import FloatingLabelInput from "../ui/FloatingLabelInput";
 import { GetItemModalNew } from "../../redux/selectors";
 
 const ModalAddItem = ({ show, setShow, handleAdd, handleLoading }) => {
-  const codeRef = React.useRef();
-  const nameRef = React.useRef();
-  const placeRef = React.useRef();
-  const shelfRef = React.useRef();
-  const balanceRef = React.useRef();
+  const [code, setCode] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [shelf, setShelf] = React.useState("");
+  const [place, setPlace] = React.useState("");
+  const [balance, setBalance] = React.useState("");
   const itemsRef = collection(db, "items");
 
   const handleSave = async () => {
     handleLoading(true);
     const item = {
-      code: codeRef.current.value,
-      name: nameRef.current.value,
-      place: placeRef.current.value,
-      shelf: shelfRef.current.value,
-      balance: balanceRef.current.value,
+      code,
+      name,
+      place,
+      shelf,
+      balance,
     };
 
     try {
@@ -36,17 +36,34 @@ const ModalAddItem = ({ show, setShow, handleAdd, handleLoading }) => {
 
     console.log(item);
   };
+
+  React.useEffect(() => {
+    if (!show) {
+      setCode("");
+      setName("");
+      setShelf("");
+      setPlace("");
+      setBalance("");
+    }
+  }, [show]);
+
   return (
     <Modal centered show={show} onHide={() => setShow(false)} backdrop="static" keyboard={false}>
       <Modal.Header>
         <Modal.Title className="d-flex justify-content-center align-items-center w-100 ">Εισαγωγη είδους</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <FloatingLabelInput type="text" placeholder="Κωδικός" ref={codeRef} />
-        <FloatingLabelInput type="text" placeholder="Περιγραφή" ref={nameRef} />
-        <FloatingLabelInput type="text" placeholder="Θέση" ref={placeRef} />
-        <FloatingLabelInput type="text" placeholder="Ράφι" ref={shelfRef} />
-        <FloatingLabelInput type="number" inputMode="decimal" placeholder="Υπόλοιπο" ref={balanceRef} />
+        <FloatingLabelInput type="text" placeholder="Κωδικός" value={code} setValue={setCode} />
+        <FloatingLabelInput type="text" placeholder="Περιγραφή" value={name} setValue={setName} />
+        <FloatingLabelInput type="text" placeholder="Θέση" value={place} setValue={setPlace} />
+        <FloatingLabelInput type="text" placeholder="Ράφι" value={shelf} setValue={setShelf} />
+        <FloatingLabelInput
+          type="number"
+          inputMode="decimal"
+          placeholder="Υπόλοιπο"
+          value={balance}
+          setValue={setBalance}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setShow(false)}>

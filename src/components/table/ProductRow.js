@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { connect } from "react-redux";
 import SwipeToDelete from "react-swipe-to-delete-component";
-import { SetLoading } from "../../redux/actions";
+import { DeleteItem, SetLoading } from "../../redux/actions";
 import "react-swipe-to-delete-component/dist/swipe-to-delete.css";
 import { deleteDoc, doc } from "firebase/firestore";
 import db from "../../firebase.config";
@@ -14,6 +14,7 @@ const ProductRow = (props) => {
     props.handleLoading(true);
     try {
       await deleteDoc(itemDBRef);
+      props.handleDelete(props.index);
     } catch (error) {
       console.log(error);
     }
@@ -21,7 +22,7 @@ const ProductRow = (props) => {
   };
 
   return (
-    <SwipeToDelete onDelete={handleDelete} classNameTag="p-2">
+    <SwipeToDelete onDelete={handleDelete} classNameTag="px-2 py-1">
       <Card className={`${props.index === props.selected ? " selected-card" : ""}`} onClick={props.onClick}>
         <Card.Body>
           <div className="text-truncate px-1">{props.item.code}</div>
@@ -48,5 +49,6 @@ const ProductRow = (props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   handleLoading: (value) => dispatch(SetLoading(value)),
+  handleDelete: (index) => dispatch(DeleteItem(index)),
 });
 export default connect(null, mapDispatchToProps)(ProductRow);
